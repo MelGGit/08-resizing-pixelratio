@@ -40,6 +40,15 @@ window.addEventListener("resize", () => {
 
   // update renderer
   renderer.setSize(sizes.width, sizes.height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
+window.addEventListener("dblclick", () => {
+  if (!document.fullscreenElement) {
+    canvas.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
 })
 
 // Scene
@@ -52,12 +61,6 @@ const mesh = new THREE.Mesh(
 )
 scene.add(mesh)
 
-// Perspective Camera
-// Parameters:
-// FOV in vertical deg best between 45 and 55,
-// aspect ration width of the render divided by the height of render,
-// near and far parameters any object between those values will be seen
-// out of the values not good values are 0.1 and 100 default is 1 and 1000
 const camera = new THREE.PerspectiveCamera(
   75,
   sizes.width / sizes.height,
@@ -65,23 +68,6 @@ const camera = new THREE.PerspectiveCamera(
   100
 )
 
-// Orthographic Camera
-// Parameters left right top bottom near far
-// left distance to the left that will be rendered
-// right distance to the right that will be rendered
-// ...
-
-// const aspectRatio = sizes.width / sizes.height
-// const camera = new THREE.OrthographicCamera(
-//   -1 * aspectRatio,
-//   1 * aspectRatio,
-//   1,
-//   -1,
-//   0.1,
-//   100
-// )
-// camera.position.x = 2
-// camera.position.y = 2
 camera.position.z = 3
 camera.lookAt(mesh.position)
 scene.add(camera)
@@ -103,18 +89,6 @@ const clock = new THREE.Clock()
 const tick = () => {
   const elapsedTime = clock.getElapsedTime()
 
-  // Update objects
-  //   mesh.rotation.y = elapsedTime
-
-  // Update camera
-  //   camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3
-  //   camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3
-  //   camera.position.y = cursor.y * 5
-
-  // camera look at mesh
-  //   camera.lookAt(mesh.position)
-
-  // Update controls so that damping occurs even without dragging
   controls.update()
 
   // Render
