@@ -22,9 +22,25 @@ const canvas = document.querySelector("canvas.webgl")
 
 // Sizes
 const sizes = {
-  width: 800,
-  height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
 }
+
+// handle resizes
+window.addEventListener("resize", () => {
+  // update sizes
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+
+  // update camera
+  camera.aspect = sizes.width / sizes.height
+
+  // update camera projection
+  camera.updateProjectionMatrix()
+
+  // update renderer
+  renderer.setSize(sizes.width, sizes.height)
+})
 
 // Scene
 const scene = new THREE.Scene()
@@ -79,6 +95,7 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
 })
 renderer.setSize(sizes.width, sizes.height)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // Animate
 const clock = new THREE.Clock()
